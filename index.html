@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Research Group Website — Built From Scratch</title>
+<meta name="description" content="An original from-scratch build of a research group website: a Django site presenting research lines, projects, people and publications, all editable through an admin." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --accent:#6366f1; --accent-soft:#ececfd; --ink:#16201f; --muted:#5d6b69;
+    --line:#dfe5e3; --bg:#fbfcfb; --card:#ffffff;
+    --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:var(--mono);font-size:.86em;background:var(--accent-soft);padding:.1em .4em;border-radius:4px;color:#4338ca}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.15;letter-spacing:-.01em}
+  /* Header */
+  header.hero{padding:88px 0 56px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 22px}
+  h1{font-size:clamp(2.6rem,6vw,4.1rem);margin:0 0 18px}
+  .lede{font-size:1.22rem;color:var(--muted);max-width:62ch;margin:0 0 28px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem}
+  .chip{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--muted);background:var(--card)}
+  /* Sections */
+  section{padding:54px 0;border-bottom:1px solid var(--line)}
+  .kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+  h2{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 20px}
+  h3{font-size:1.2rem;margin:0 0 6px}
+  p{margin:0 0 18px;max-width:68ch}
+  .muted{color:var(--muted)}
+  /* Stack grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:8px}
+  .tool{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .tool .t{font-family:var(--mono);font-size:.78rem;color:var(--accent);letter-spacing:.04em;margin-bottom:8px}
+  .tool h3{font-size:1.05rem;font-family:var(--sans);font-weight:600;margin-bottom:6px}
+  .tool p{font-size:.92rem;color:var(--muted);margin:0}
+  /* Pipeline / modules */
+  ol.flow{counter-reset:s;list-style:none;padding:0;margin:24px 0 0}
+  ol.flow li{position:relative;padding:18px 0 18px 56px;border-top:1px solid var(--line)}
+  ol.flow li:before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;left:0;top:18px;font-family:var(--mono);font-size:.8rem;color:var(--accent);border:1px solid var(--line);border-radius:8px;width:38px;height:38px;display:grid;place-items:center;background:var(--card)}
+  ol.flow li h3{font-family:var(--sans);font-size:1.02rem;font-weight:600;margin:0 0 4px}
+  ol.flow li p{margin:0;font-size:.93rem;color:var(--muted)}
+  .tag{display:inline-block;font-family:var(--mono);font-size:.68rem;padding:2px 7px;border-radius:5px;margin-left:8px;vertical-align:middle}
+  .tag.on{background:#e6f7ec;color:#1c7a43}
+  .tag.off{background:#fdecea;color:#b23b2c}
+  /* Callout */
+  .callout{background:var(--accent-soft);border:1px solid #c9c9f9;border-radius:14px;padding:24px 26px;margin-top:8px}
+  .callout p:last-child{margin:0}
+  /* Reflection list */
+  ul.learn{list-style:none;padding:0;margin:8px 0 0}
+  ul.learn li{padding:14px 0 14px 30px;border-top:1px solid var(--line);position:relative;color:var(--muted);max-width:68ch}
+  ul.learn li:before{content:"→";position:absolute;left:0;color:var(--accent);font-family:var(--mono)}
+  ul.learn li b{color:var(--ink);font-weight:600}
+  /* Footer */
+  footer{padding:48px 0 80px}
+  .credit{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px}
+  .credit .k{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  footer .fine{font-size:.8rem;color:var(--muted);margin-top:22px;text-align:center}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">From-Scratch Build · Research Web</p>
+    <h1>Research Group Website</h1>
+    <p class="lede">A public home for a research group — its research lines, projects, people and publications, all kept current through an admin instead of frozen in static pages. Rebuilt from scratch to learn how a multi-section institutional site is modelled and served.</p>
+    <div class="meta">
+      <span class="chip">Django</span><span class="chip">SQLite</span><span class="chip">Markdown</span>
+      <span class="chip">Media uploads</span><span class="chip">Docker</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">What it is</p>
+    <h2>A group, in one site</h2>
+    <p>A research group has a lot to show: the <b>themes</b> it works on, the <b>projects</b> running under each, the <b>people</b> who do the work, the <b>papers</b> they publish, and the <b>positions</b> they're hiring for. This site gathers all of it into one structured, editable website.</p>
+    <p>I built it to learn how to model relationships, not just lists. A project belongs to a research line; a publication links to its authors; a job posting opens and closes. Capturing those connections in the data model is what makes the site feel like a coherent whole rather than a pile of pages.</p>
+    <div class="callout">
+      <p><b>The core idea I wanted to learn:</b> an institutional site is a small <i>relational</i> world. Once the relationships between research lines, projects, people and publications are right, every page is just a different lens on the same connected data.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">The stack</p>
+    <h2>Tools under the hood</h2>
+    <p class="muted">The point of this rebuild was the toolchain. Here is what each piece actually does in the system.</p>
+    <div class="grid">
+      <div class="tool"><div class="t">framework</div><h3>Django</h3><p>The Python framework underneath everything — routing, the ORM, server-side templating and a ready-made admin for the group to manage content.</p></div>
+      <div class="tool"><div class="t">data model</div><h3>Related models</h3><p>ResearchLine, ResearchProject, Publication, TeamMember and JobPosition — linked so a project knows its theme and a paper knows its authors.</p></div>
+      <div class="tool"><div class="t">content</div><h3>Markdown</h3><p>Section write-ups and project descriptions are authored in Markdown and rendered with a custom template filter into clean HTML.</p></div>
+      <div class="tool"><div class="t">media</div><h3>Image &amp; banner uploads</h3><p>Banners, team photos and publication thumbnails are uploaded through the admin and served from a managed media folder.</p></div>
+      <div class="tool"><div class="t">context</div><h3>Context processors</h3><p>Shared data — site settings, navigation — is injected into every template so the layout stays consistent across pages.</p></div>
+      <div class="tool"><div class="t">packaging</div><h3>Docker Compose</h3><p>The application and its database file are containerised, so the same site runs identically in development and on a server.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">Architecture</p>
+    <h2>The sections of the site</h2>
+    <p>The site is built from a handful of content areas, each backed by its own model and views.</p>
+    <ol class="flow">
+      <li><h3>Home <span class="tag on">live</span></h3><p>An editable landing area with a headline, intro and animated banners that introduce the group.</p></li>
+      <li><h3>Research lines <span class="tag on">live</span></h3><p>The themes the group works on, each with its own write-up and the projects that sit under it.</p></li>
+      <li><h3>Projects <span class="tag on">live</span></h3><p>Individual research projects, linked back to their theme, with descriptions, media and optional video.</p></li>
+      <li><h3>People <span class="tag on">live</span></h3><p>Team members with roles and positions, presented as the group's public roster.</p></li>
+      <li><h3>Publications <span class="tag on">live</span></h3><p>Papers with links to code and project pages, kept as a living, ordered list.</p></li>
+      <li><h3>Open positions <span class="tag on">live</span></h3><p>Job postings the group can open and close from the admin as hiring needs change.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">How it runs</p>
+    <h2>One container, many editors</h2>
+    <p>The site is meant to be run by the group, not by a developer. The workflow is:</p>
+    <ul class="learn">
+      <li><b>Bring it up:</b> <code>docker compose up</code> starts Django, applies migrations and serves every section.</li>
+      <li><b>Curate:</b> members add research lines, projects, people and papers through the admin, writing long text in Markdown.</li>
+      <li><b>Stay current:</b> opening a position or publishing a paper updates the public site immediately.</li>
+    </ul>
+    <p class="muted" style="margin-top:18px">In my rebuild I spent most of the effort on the relationships between models — that's where a group site lives or dies.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">Reflection</p>
+    <h2>What rebuilding it taught me</h2>
+    <ul class="learn">
+      <li><b>Relationships are the hard part.</b> Single models are easy; deciding how projects, themes, people and papers connect is the real design work.</li>
+      <li><b>A custom template filter goes a long way.</b> Rendering Markdown to HTML inside templates let non-coders write rich content without ever seeing a tag.</li>
+      <li><b>Context processors keep things DRY.</b> Injecting shared settings everywhere meant the navigation and footer never drifted out of sync between pages.</li>
+      <li><b>Media handling is its own subject.</b> Uploads, storage paths and serving images turned out to need as much care as the text content did.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="credit">
+      <div class="k">About this build</div>
+      <p style="margin:0">An original, from-scratch build by <b>Andrea</b> — written to learn how a multi-section institutional website is modelled, related and served with Django. Plain HTML/CSS for this showcase, deployed on GitHub Pages.</p>
+    </div>
+    <p class="fine">Built from scratch by Andrea · one of an ongoing series of learning builds.</p>
+  </div>
+</footer>
+</body>
+</html>
